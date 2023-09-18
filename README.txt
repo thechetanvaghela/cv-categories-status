@@ -5,7 +5,7 @@ Tags: taxonomy, category, draft status
 Requires at least: 3.0.1
 Requires PHP: 7.0
 Tested up to: 6.2.2
-Stable tag: 4.3
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ By utilizing this plugin, there is no need to permanently delete a term when it 
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/cv-categories-status` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the plugin directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the "Categories Status" plugin through the 'Plugins' screen in WordPress
 3. Click on "CV Categories Status" on the dashboard.
 
