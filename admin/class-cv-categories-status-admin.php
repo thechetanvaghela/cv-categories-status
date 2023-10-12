@@ -199,9 +199,10 @@ class Cv_Categories_Status_Admin {
 					foreach ($term_status as $key => $termstatus) 
 					{
 						$item_checked = ($key == $cv_term_status_draft ) ? 'selected' : '';
-						echo '<option value="'.esc_attr($key).'" '.$item_checked.'>'.esc_html($termstatus).'</option>';
+						echo '<option value="'.esc_attr($key).'" '.esc_attr($item_checked).'>'.esc_html($termstatus).'</option>';
 					} ?>
 				</select>
+				<?php wp_nonce_field( 'cvcs_save_action_nonce', 'cvcs_save_nonce' ); ?>
 			</td>
 		</tr>
 		<?php
@@ -212,10 +213,17 @@ class Cv_Categories_Status_Admin {
 	 * @since    1.0.0
 	 */
 	function cvcs_save_custom_option_field($term_id) {
-		if (isset($_POST['cvcs-term-status-option'])) 
-		{
-			$custom_option_value = sanitize_text_field($_POST['cvcs-term-status-option']);
-			update_term_meta($term_id, 'cv_term_status_draft', $custom_option_value);
+
+		if (current_user_can('manage_options')) {
+
+			if (  isset( $_POST['cvcs_save_nonce'] ) &&  wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['cvcs_save_nonce'])), 'cvcs_save_action_nonce' ) ) 
+			{
+				if (isset($_POST['cvcs-term-status-option'])) 
+				{
+					$custom_option_value = sanitize_text_field($_POST['cvcs-term-status-option']);
+					update_term_meta($term_id, 'cv_term_status_draft', $custom_option_value);
+				}
+			}
 		}
 	}
 
@@ -342,7 +350,7 @@ class Cv_Categories_Status_Admin {
 				$notice_class = 'notice-error';
 			}
 			# print admin notice
-			printf('<div id="message" class="notice '.$notice_class.' is-dismissible"><p>' . __('%s.', 'cv-categories-status') . '</p></div>', esc_attr($message));
+			printf('<div id="message" class="notice '.esc_attr($notice_class).' is-dismissible"><p>' . __('%s.', 'cv-categories-status') . '</p></div>', esc_attr($message));
 		}
 
 	}
@@ -366,7 +374,7 @@ class Cv_Categories_Status_Admin {
 	        	# current page url
 		        $pluginurl = admin_url('admin.php?page=cvcs_admin_menu_settings_page');
 	        	# check nonce
-	        	if ( ! isset( $_POST['cvcs_nonce'] ) || ! wp_verify_nonce( $_POST['cvcs_nonce'], 'cvcs_action_nonce' ) ) 
+	        	if ( ! isset( $_POST['cvcs_nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['cvcs_nonce'])), 'cvcs_action_nonce' ) ) 
 	        	{
 	        		$redirect_url = add_query_arg('cvcs-msg', 'error',$pluginurl);
 		            wp_safe_redirect( $redirect_url);
