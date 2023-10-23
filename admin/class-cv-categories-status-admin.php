@@ -350,7 +350,7 @@ class Cv_Categories_Status_Admin {
 				$notice_class = 'notice-error';
 			}
 			# print admin notice
-			printf('<div id="message" class="notice '.esc_attr($notice_class).' is-dismissible"><p>' . __('%s.', 'cv-categories-status') . '</p></div>', esc_attr($message));
+			printf('<div id="message" class="notice '.esc_attr($notice_class).' is-dismissible"><p>' . esc_html__('%s.', 'cv-categories-status') . '</p></div>', esc_attr($message));
 		}
 
 	}
